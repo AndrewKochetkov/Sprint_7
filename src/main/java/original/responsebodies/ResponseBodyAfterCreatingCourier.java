@@ -2,7 +2,7 @@ package original.responsebodies;
 import lombok.Data;
 
 @Data
-public class RightResponseBodyAfterCreatingCourier {
+public class ResponseBodyAfterCreatingCourier {
 
     private Boolean ok;
 }

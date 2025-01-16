@@ -7,8 +7,8 @@ import io.restassured.response.Response;
 import original.Constants;
 import original.requestbodies.RequestBodyForCreatingCourier;
 import original.requestbodies.RequestBodyForLoginCourier;
-import original.responsebodies.RightResponseBodyAfterCreatingCourier;
-import original.responsebodies.RightResponseBodyAfterCreatingCourierWithBadRequest;
+import original.responsebodies.ResponseBodyAfterCreatingCourier;
+import original.responsebodies.ResponseBodyAfterCreatingCourierWithBadRequest;
 
 import java.io.File;
 
@@ -20,10 +20,10 @@ public class CreatingCourierSteps {
     public Response createCourier(RequestBodyForCreatingCourier requestBodyForCreatingCourier) {
         Response response =
                 given()
-                .header("Content-type", "application/json")
-                .body(requestBodyForCreatingCourier)
-                .when()
-                .post(Constants.ENDPOINT_FOR_CREATING_COURIER);
+                        .header("Content-type", "application/json")
+                        .body(requestBodyForCreatingCourier)
+                        .when()
+                        .post(Constants.ENDPOINT_FOR_CREATING_COURIER);
         return response;
     }
 
@@ -35,9 +35,9 @@ public class CreatingCourierSteps {
     @Step("Форматирование тела ответа в форматированный JSON")
     public String getFormattedResponseBody(Response response) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        RightResponseBodyAfterCreatingCourier rightResponseBodyAfterCreatingCourier =
-                response.body().as(RightResponseBodyAfterCreatingCourier.class);
-        return gson.toJson(rightResponseBodyAfterCreatingCourier);
+        ResponseBodyAfterCreatingCourier responseBodyAfterCreatingCourier =
+                response.body().as(ResponseBodyAfterCreatingCourier.class);
+        return gson.toJson(responseBodyAfterCreatingCourier);
     }
 
     @Step("Логин курьера с данными: {requestBodyForLoginCourier}")
@@ -72,8 +72,8 @@ public class CreatingCourierSteps {
     @Step("Проверка тела ответа после ошибки (Bad Request)")
     public String getFormattedErrorResponseBody(Response response) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        RightResponseBodyAfterCreatingCourierWithBadRequest errorResponse =
-                response.body().as(RightResponseBodyAfterCreatingCourierWithBadRequest.class);
+        ResponseBodyAfterCreatingCourierWithBadRequest errorResponse =
+                response.body().as(ResponseBodyAfterCreatingCourierWithBadRequest.class);
         return gson.toJson(errorResponse);
     }
 

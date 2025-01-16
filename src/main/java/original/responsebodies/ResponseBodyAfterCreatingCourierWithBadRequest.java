@@ -1,7 +1,8 @@
 package original.responsebodies;
+
 import lombok.Data;
 
 @Data
-public class RightResponseBodyAfterLoginCourierWithBadRequest {
+public class ResponseBodyAfterCreatingCourierWithBadRequest {
     private String message;
 }

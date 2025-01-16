@@ -1,21 +1,17 @@
 package original;
 
-import io.restassured.RestAssured;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 import original.stepsfortests.ListOfOrdersSteps;
 
-public class ListOfOrdersTest {
+public class ListOfOrdersTest extends BaseTest {
 
     ListOfOrdersSteps listOfOrdersSteps = new ListOfOrdersSteps();
 
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = Constants.BASIC_URL;
-    }
-
     @Test
+    @Description("Проверка, что список заказов не пуст")
     public void listOfOrdersIsNotNull() {
         Response responseAfterGettingListOfOrders = listOfOrdersSteps.getListOfOrders();
 

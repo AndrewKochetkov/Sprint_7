@@ -1,6 +1,6 @@
 package original;
 
-import io.restassured.RestAssured;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,10 +9,11 @@ import org.junit.runners.Parameterized;
 import original.requestbodies.RequestBodyForCreatingOrder;
 import original.stepsfortests.CreatingCourierSteps;
 import original.stepsfortests.CreatingOrderSteps;
+
 import static org.apache.http.HttpStatus.*;
 
 @RunWith(Parameterized.class)
-public class CreatingOrderTest {
+public class CreatingOrderTest extends BaseTest {
 
     CreatingCourierSteps creatingCourierSteps = new CreatingCourierSteps();
     CreatingOrderSteps creatingOrderSteps = new CreatingOrderSteps();
@@ -26,11 +27,6 @@ public class CreatingOrderTest {
     private final String deliveryDate;
     private final String comment;
     private final String[] color;
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = Constants.BASIC_URL;
-    }
 
     public CreatingOrderTest(String firstName, String lastName, String address, String metroStation, String phone, Integer rentTime, String deliveryDate, String comment, String[] color) {
         this.firstName = firstName;
@@ -55,7 +51,8 @@ public class CreatingOrderTest {
     }
 
     @Test
-    public void rightCreatingOrder() {
+    @Description("Проверка успешного создания заказа")
+    public void CreatingOrder() {
         RequestBodyForCreatingOrder requestBodyForCreatingOrder =
                 new RequestBodyForCreatingOrder(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
 

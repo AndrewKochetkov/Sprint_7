@@ -6,7 +6,7 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import original.Constants;
 import original.requestbodies.RequestBodyForCreatingOrder;
-import original.responsebodies.RightResponseBodyAfterCreatingOrder;
+import original.responsebodies.ResponseBodyAfterCreatingOrder;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
@@ -30,9 +30,9 @@ public class CreatingOrderSteps {
     @Step("Проверяем тело ответа после создания заказа")
     public void assertCreateOrderResponseBody(Response response, String expectedJson) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        RightResponseBodyAfterCreatingOrder rightResponseBodyAfterCreatingOrder =
-                response.body().as(RightResponseBodyAfterCreatingOrder.class);
-        String actualJson = gson.toJson(rightResponseBodyAfterCreatingOrder);
+        ResponseBodyAfterCreatingOrder responseBodyAfterCreatingOrder =
+                response.body().as(ResponseBodyAfterCreatingOrder.class);
+        String actualJson = gson.toJson(responseBodyAfterCreatingOrder);
         assertEquals(expectedJson, actualJson);
     }
 

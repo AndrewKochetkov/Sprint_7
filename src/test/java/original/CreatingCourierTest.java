@@ -1,37 +1,32 @@
 package original;
 
-import io.restassured.RestAssured;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import original.requestbodies.RequestBodyForCreatingCourier;
 import original.requestbodies.RequestBodyForLoginCourier;
 import original.stepsfortests.CreatingCourierSteps;
+
 import static org.apache.http.HttpStatus.*;
 
-import java.io.File;
-
-public class CreatingCourierTest {
+public class CreatingCourierTest extends BaseTest {
 
     CreatingCourierSteps creatingCourierSteps = new CreatingCourierSteps();
 
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = Constants.BASIC_URL;
-    }
-
     @Test
-    public void rightCreatingCourier() {
+    @Description("Проверка успешного создания курьера с корректными данными")
+    public void creatingCourier() {
         RequestBodyForCreatingCourier requestBodyForCreatingCourier = new RequestBodyForCreatingCourier("Andr_Velo", "1234", "Andrey");
         Response responseAfterCreatingCourier = creatingCourierSteps.createCourier(requestBodyForCreatingCourier);
         creatingCourierSteps.verifyStatus(responseAfterCreatingCourier, SC_CREATED);
 
         String actualJson = creatingCourierSteps.getFormattedResponseBody(responseAfterCreatingCourier);
-        creatingCourierSteps.verifyResponseBody(Constants.EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_COURIER, actualJson);
+        creatingCourierSteps.verifyResponseBody(Constants.SUCCESS_RESPONSE_BODY_AFTER_CREATING_COURIER, actualJson);
     }
 
     @Test
+    @Description("Проверка создания двух одинаковых курьеров")
     public void tryToCreateTwoIdenticalCouriers() {
         RequestBodyForCreatingCourier requestBodyForCreatingCourier = new RequestBodyForCreatingCourier("Andr_Velo", "1234", "Andrey");
 
@@ -41,51 +36,56 @@ public class CreatingCourierTest {
         creatingCourierSteps.verifyStatus(secondResponseAfterCreatingCourier, SC_CONFLICT);
 
         String actualJson = creatingCourierSteps.getFormattedErrorResponseBody(secondResponseAfterCreatingCourier);
-        creatingCourierSteps.verifyResponseBody(Constants.EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_IDENTICAL_COURIERS, actualJson);
+        creatingCourierSteps.verifyResponseBody(Constants.ERROR_RESPONSE_BODY_FOR_DUPLICATE_COURIER, actualJson);
     }
 
     @Test
+    @Description("Проверка создания курьера без пароля")
     public void tryToCreateCourierWithoutPassword() {
-        File json = new File("src/test/resources/creatingCourierWithoutPassword.json");
+        // Создаем объект RequestBodyForCreatingCourier без password
+        RequestBodyForCreatingCourier requestBody = new RequestBodyForCreatingCourier("Andr_Velo", null, "Andrey");
 
-        Response responseAfterCreatingCourier = creatingCourierSteps.createCourierFromFile(json);
+        Response responseAfterCreatingCourier = creatingCourierSteps.createCourier(requestBody);
         creatingCourierSteps.verifyStatus(responseAfterCreatingCourier, SC_BAD_REQUEST);
 
         String actualJson = creatingCourierSteps.getFormattedErrorResponseBody(responseAfterCreatingCourier);
-        creatingCourierSteps.verifyResponseBody(Constants.EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_COURIER_WITH_BAD_REQUEST, actualJson);
+        creatingCourierSteps.verifyResponseBody(Constants.ERROR_RESPONSE_BODY_FOR_INVALID_COURIER_DATA, actualJson);
     }
 
     @Test
+    @Description("Проверка создания курьера без логина")
     public void tryToCreateCourierWithoutLogin() {
-        File json = new File("src/test/resources/creatingCourierWithoutLogin.json");
+        // Создаем объект RequestBodyForCreatingCourier без login
+        RequestBodyForCreatingCourier requestBody = new RequestBodyForCreatingCourier(null, "1234", "Andrey");
 
-        Response responseAfterCreatingCourier = creatingCourierSteps.createCourierFromFile(json);
+        Response responseAfterCreatingCourier = creatingCourierSteps.createCourier(requestBody);
         creatingCourierSteps.verifyStatus(responseAfterCreatingCourier, SC_BAD_REQUEST);
 
         String actualJson = creatingCourierSteps.getFormattedErrorResponseBody(responseAfterCreatingCourier);
-        creatingCourierSteps.verifyResponseBody(Constants.EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_COURIER_WITH_BAD_REQUEST, actualJson);
+        creatingCourierSteps.verifyResponseBody(Constants.ERROR_RESPONSE_BODY_FOR_INVALID_COURIER_DATA, actualJson);
     }
 
     @Test
+    @Description("Проверка создания курьера без имени")
     public void tryToCreateCourierWithoutFirstName() {
-        File json = new File("src/test/resources/creatingCourierWithoutFirstName.json");
+        // Создаем объект RequestBodyForCreatingCourier без firstName
+        RequestBodyForCreatingCourier requestBody = new RequestBodyForCreatingCourier("Andr_Velo", "1234", null);
 
-        Response responseAfterCreatingCourier = creatingCourierSteps.createCourierFromFile(json);
+        Response responseAfterCreatingCourier = creatingCourierSteps.createCourier(requestBody);
 
         creatingCourierSteps.verifyStatus(responseAfterCreatingCourier, SC_BAD_REQUEST);
         String actualJson = creatingCourierSteps.getFormattedErrorResponseBody(responseAfterCreatingCourier);
-        creatingCourierSteps.verifyResponseBody(Constants.EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_COURIER_WITH_BAD_REQUEST, actualJson);
+        creatingCourierSteps.verifyResponseBody(Constants.ERROR_RESPONSE_BODY_FOR_INVALID_COURIER_DATA, actualJson);
     }
 
     @After
     public void setDown() {
         RequestBodyForLoginCourier requestBodyForLoginCourier = new RequestBodyForLoginCourier("Andr_Velo", "1234");
         Response responseAfterLoginCourier = creatingCourierSteps.loginCourier(requestBodyForLoginCourier);
-        if(responseAfterLoginCourier.getStatusCode() == SC_OK) {
+        if (responseAfterLoginCourier.getStatusCode() == SC_OK) {
             String courierId = creatingCourierSteps.extractCourierId(responseAfterLoginCourier);
             creatingCourierSteps.deleteCourierById(courierId);
-        }
-        else {
+        } else {
             System.out.println("Wrong");
         }
     }

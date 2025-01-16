@@ -2,6 +2,6 @@ package original.responsebodies;
 import lombok.Data;
 
 @Data
-public class RightResponseBodyAfterCreatingOrder {
+public class ResponseBodyAfterCreatingOrder {
     private int track;
 }

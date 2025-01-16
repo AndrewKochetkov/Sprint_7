@@ -8,20 +8,20 @@ public class Constants {
     public final static String ENDPOINT_FOR_CREATING_ORDER = "/api/v1/orders";
     public final static String ENDPOINT_FOR_GETTING_LIST_OF_ORDERS = "/api/v1/orders";
 
-    public final static String EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_COURIER = "{\n" +
+    public final static String SUCCESS_RESPONSE_BODY_AFTER_CREATING_COURIER = "{\n" +
             "  \"ok\": true\n" +
             "}";
-    public final static String EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_IDENTICAL_COURIERS = "{\n" +
+    public final static String ERROR_RESPONSE_BODY_FOR_DUPLICATE_COURIER = "{\n" +
             "  \"message\": \"Этот логин уже используется\"\n" +
             "}";
-    public final static String EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_CREATING_COURIER_WITH_BAD_REQUEST = "{\n" +
+    public final static String ERROR_RESPONSE_BODY_FOR_INVALID_COURIER_DATA = "{\n" +
             "  \"message\": \"Недостаточно данных для создания учетной записи\"\n" +
             "}";
 
-    public final static String EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_LOGIN_COURIER_WITH_WRONG_DATA = "{\n" +
+    public final static String ERROR_RESPONSE_BODY_FOR_INVALID_LOGIN_DATA = "{\n" +
             "  \"message\": \"Учетная запись не найдена\"\n" +
             "}";
-    public final static String EXAMPLE_OF_RIGHT_RESPONSE_BODY_AFTER_LOGIN_COURIER_WITH_BAD_REQUEST = "{\n" +
+    public final static String ERROR_RESPONSE_BODY_FOR_MISSING_LOGIN_DATA = "{\n" +
             "  \"message\": \"Недостаточно данных для входа\"\n" +
             "}";
 }

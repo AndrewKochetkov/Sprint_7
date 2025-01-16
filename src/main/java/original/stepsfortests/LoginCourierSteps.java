@@ -7,8 +7,8 @@ import io.restassured.response.Response;
 import original.Constants;
 import original.requestbodies.RequestBodyForCreatingCourier;
 import original.requestbodies.RequestBodyForLoginCourier;
-import original.responsebodies.RightResponseBodyAfterLoginCourier;
-import original.responsebodies.RightResponseBodyAfterLoginCourierWithBadRequest;
+import original.responsebodies.ResponseBodyAfterLoginCourier;
+import original.responsebodies.ResponseBodyAfterLoginCourierWithBadRequest;
 
 import java.io.File;
 
@@ -20,16 +20,16 @@ public class LoginCourierSteps {
     @Step("Проверка JSON ответа после успешного логина")
     public void assertLoginResponseBody(Response response, String expectedJson) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        RightResponseBodyAfterLoginCourier rightResponseBody = response.body().as(RightResponseBodyAfterLoginCourier.class);
-        String actualJson = gson.toJson(rightResponseBody);
+        ResponseBodyAfterLoginCourier responseBodyAfterLoginCourier = response.body().as(ResponseBodyAfterLoginCourier.class);
+        String actualJson = gson.toJson(responseBodyAfterLoginCourier);
         assertEquals(expectedJson, actualJson);
     }
 
     @Step("Проверка JSON ответа после ошибки")
     public void assertErrorResponseBody(Response response, String expectedErrorJson) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        RightResponseBodyAfterLoginCourierWithBadRequest errorResponse =
-                response.body().as(RightResponseBodyAfterLoginCourierWithBadRequest.class);
+        ResponseBodyAfterLoginCourierWithBadRequest errorResponse =
+                response.body().as(ResponseBodyAfterLoginCourierWithBadRequest.class);
         String actualJson = gson.toJson(errorResponse);
         assertEquals(expectedErrorJson, actualJson);
     }
